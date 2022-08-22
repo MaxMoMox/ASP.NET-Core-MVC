@@ -15,6 +15,27 @@
 
 # Mono auto generated files
 mono_crash.*
+.vs/
+logs/
+TestResults/
+bin/
+obj/
+*.user
+*.suo
+*.bak
+*.ncb
+*.log
+*.zip
+*.cache
+*.bak
+*.pdb
+*.dll
+*.aps
+*.exp
+*.pch
+*.vspscc
+*.ilk
+*.txt
 
 # Build results
 [Dd]ebug/
