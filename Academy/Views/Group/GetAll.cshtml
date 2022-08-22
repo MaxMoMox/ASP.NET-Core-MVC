@@ -1,0 +1,76 @@
+﻿@using Academy.Domain.Entities
+
+@{
+    ViewBag.Title = "All groups";
+    Layout = "_Layout";
+
+    var groups = ViewData["Groups"] as List<Group>;
+    var courses = ViewData["Courses"] as List<Course>;
+}
+
+@if (groups != null && courses != null)
+{
+    @if (groups.Count == 0 && courses.Count == 0)
+    {
+        <div class="row" style="padding-top: 10px">
+            <div class="col text-center">
+                <h4> There are no courses and no groups in the Academy.</h4>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 10px">
+            <div class="col text-center">
+                <h4> First you need to add courses and groups inside them.</h4>
+            </div>
+        </div>
+    }
+    else if(groups.Count == 0)
+    {
+        <div class="row" style="padding-top: 10px">
+            <div class="col text-center">
+                <h4> There are no groups inside Academies courses.</h4>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row" style="padding-top: 10px">
+            <div class="col text-center">
+                <h4> List of all groups in the Academy</h4>
+            </div>
+        </div>
+
+        <div class="table table-responsive" style="padding-top: 10px">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th style="width: 45%">Name</th>
+                    <th style="width: 45%">Course</th>
+                    <th style="width: 10%">Action</th>
+                </tr>
+                </thead>
+                
+                <tbody>
+                    @foreach (var course in courses)
+                    {
+                        var courseGroups = groups.Where(g => g.CourseId == course.Id).ToList();
+
+                        @foreach (var group in courseGroups)
+                        {
+                            <tr>
+                                <td>@group.Name</td>
+                                <td>@course.Name</td>
+                                <td>
+                                    <a asp-controller="Group" asp-action="Select" asp-route-groupId="@group.Id" class="btn btn-primary">Select</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div class="col text-center">
+        <a asp-controller="Group" asp-action="Create" class="btn btn-info">Add new group</a>
+    </div>
+}

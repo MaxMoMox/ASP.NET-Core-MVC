@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Error";
+    Layout = "_Layout";
+}
+
+<div>
+    <div class="col text-center">
+        <h4>Something went wrong.</h4>
+    </div>
+</div>
+
+<div class="col text-center" style="padding-top: 50px">
+    <div>
+        <h5>The page you are looking for does not exist.  </h5>
+    </div>
+</div>
+
+<div class="col text-center" style="padding-top: 20px">
+    <div>
+        <h5>Check the URL or go to the home page.</h5>
+    </div>
+</div>
+
+<div class="col text-center" style="padding-top: 10px">
+    <a asp-controller="Course" asp-action="GetAll" class="btn btn-info">Home page</a>
+</div>

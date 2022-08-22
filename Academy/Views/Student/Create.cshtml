@@ -1,0 +1,77 @@
+﻿@model Academy.Domain.Entities.Student
+
+@{
+    ViewBag.Title = "Add/Edit student";
+    Layout = "_Layout";
+
+    Model.CourseId = 0;
+
+    var textTitle = "Add new student";
+    
+    if (Model.Id != 0)
+    {
+        textTitle = $"Edit '{Model.FirstName} {Model.LastName}' student";
+    }
+}
+
+<div class="col-md-8">
+    <div class="card-body">
+        <div class="card card" style="background-color:whitesmoke">
+            <div class="card-header">
+                <h3 class="text-center">@textTitle</h3>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger text-center"></div>
+                    <input asp-for="Id" hidden value="@Model.Id"/>
+                    <div>
+                        <label>First name </label>
+                        <input asp-for="FirstName" class="form-control" type="text">
+
+                    </div>
+                    <div>
+                        <label>Last name </label>
+                        <input asp-for="LastName" class="form-control" type="text">
+                    </div>
+
+                    <div>
+                        <label asp-for="CourseId">Course</label>
+                        @Html.DropDownListFor(g => g.CourseId, ViewData["CoursesList"] as SelectList, "Select course", new {@class = "form-control"})
+                    </div>
+                    <div>
+                        <label asp-for="GroupId">Group</label>
+                        <select class="form-control" id = "GroupId" name = "GroupId" asp-for="GroupId"></></select>
+                    </div>
+                    <button class="btn btn-primary btn-lg" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var groupsItems = "<option value='0'>Select group</option";
+            $('#GroupId').html(groupsItems);
+        })
+    </script>
+
+    <script>
+        $(function() {
+            $("select#CourseId").change(function() {
+                var courseId = $(this).val();
+                $("select#GroupId").empty();
+                $.getJSON(`/Student/GetGroupSelectList?courseId=${courseId}`, function(data) {
+                        var items = '';
+                        $.each(data, function(i, group) {
+                            items += "<option value= '" + group.value + "'>" + group.text + "</option>";
+                        });
+                        $('#GroupId').html(items);
+                    }
+                );
+            });
+        })
+    </script>
+}

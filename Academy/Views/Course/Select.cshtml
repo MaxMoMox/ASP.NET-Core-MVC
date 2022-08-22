@@ -1,0 +1,92 @@
+﻿@using Academy.Domain.Entities
+
+@{
+    ViewBag.Title = "Groups list of course";
+    Layout = "_Layout";
+
+    var groups = ViewData["Groups"] as List<Group>;
+    var course = ViewData["Course"] as Course;
+}
+
+@if (groups != null && course != null)
+{
+    @if (groups.Count == 0)
+    {
+        <div class="row" style="padding-top: 10px">
+            <div class="col text-center">
+                <h4> There are no groups inside "@course.Name" course.</h4>
+            </div>
+        </div>
+
+        if (TempData["GroupSuccessAlertMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible" role="alert" style="padding-top: 10px">@TempData["GroupSuccessAlertMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        if (TempData["GroupErrorAlertMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert" style="padding-top: 10px">@TempData["GroupErrorAlertMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="row" style="padding-top: 10px">
+            <div class="col text-center">
+                <h4>Group list of "@course.Name" course</h4>
+            </div>
+        </div>
+
+        if (TempData["GroupErrorAlertMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert" style="padding-top: 10px">@TempData["GroupErrorAlertMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        if (TempData["GroupSuccessAlertMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible" role="alert" style="padding-top: 10px">@TempData["GroupSuccessAlertMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <div class="table table-responsive" style="padding-top: 10px">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th style="width: 39%">Name</th>
+                    <th style="width: 40%">Course</th>
+                    <th style="width: 7%"></th>
+                    <th style="width: 7%">Actions</th>
+                    <th style="width: 7%"></th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach (var group in groups)
+                {
+                    <tr>
+                        <td>@group.Name</td>
+                        <td>@course.Name</td>
+                        <td>
+                            <a asp-controller="Group" asp-action="Select" asp-route-groupId="@group.Id" class="btn btn-primary">Select</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Group" asp-action="Create" asp-route-groupId="@group.Id" class="btn btn-dark">Edit</a>
+                        </td>
+                        <td>
+                            <a asp-controller="Group" asp-action="Delete" asp-route-groupId="@group.Id" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+    <div class="col text-center">
+        <a asp-controller="Group" asp-action="Create" class="btn btn-info">Add new group</a>
+    </div>
+}

@@ -1,0 +1,39 @@
+﻿@model Academy.Domain.Entities.Course
+
+@{
+    ViewBag.Title = "Create/Edit course";
+    Layout = "_Layout";
+
+    var textTitle = "Add new course";
+
+    if (Model.Id != 0)
+    {
+        textTitle = $"Edit {Model.Name} course";
+    }
+}
+
+<div class="col-md-8">
+    <div class="card-body">
+        <div class="card card" style="background-color:whitesmoke">
+            <div class="card-header">
+                <h3 class="text-center">@textTitle</h3>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <input asp-for="Id" hidden />
+                    <div asp-validation-summary="All" class="text-danger text-center"></div>
+
+                    <div>
+                        <label asp-for="Name"></label>
+                        <input asp-for="Name" class="form-control" type="text">
+                    </div>
+                    <div>
+                        <label asp-for="Description"></label>
+                        <input asp-for="Description" class="form-control" type="text">
+                    </div >
+                    <button class="btn btn-primary btn-lg" type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

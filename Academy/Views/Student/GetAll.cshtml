@@ -1,0 +1,104 @@
+﻿@using Academy.Domain.Entities
+
+@{
+    ViewBag.Title = "All students list";
+    Layout = "_Layout";
+
+    var groups = ViewData["Groups"] as List<Group>;
+    var courses = ViewData["Courses"] as List<Course>;
+    var students = ViewData["Students"] as List<Student>;
+}
+
+@if (groups != null && courses != null && students != null)
+{
+    @if (groups.Count == 0 && courses.Count == 0 && students.Count == 0)
+    {
+        <div class="row" style="padding-top: 80px">
+            <div class="col text-center">
+                <h4> There are no courses, groups and students in the Academy.</h4>
+            </div>
+        </div>
+
+        <div class="row" style="padding-top: 20px">
+            <div class="col text-center">
+                <h4> First you need to add courses and groups inside.</h4>
+            </div>
+        </div>
+            
+        <div class="row" style="padding-top: 20px">
+            <div class="col text-center">
+                <h4> Then you can add students to the created groups.</h4>
+            </div>
+        </div>
+    }
+    else if(groups.Count == 0 && students.Count == 0)
+    {
+        <div class="row" style="padding-top: 40px">
+            <div class="col text-center">
+                <h4>There no groups inside Academy courses. Please, add them first.</h4>
+            </div>
+        </div>
+            
+        <div class="row" style="padding-top: 20px">
+            <div class="col text-center">
+                <h4> Then you can add students to the created groups.</h4>
+            </div>
+        </div>
+    }
+    else if(students.Count == 0)
+    {
+        <div class="row" style="padding-top: 20px">
+            <div class="col text-center">
+                <h4> There no students inside any groups.</h4>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row" style="padding-top: 40px">
+            <div class="col text-center">
+                <h3>List of all students in the Academy</h3>
+            </div>
+        </div>
+
+        <div class="table table-responsive" style="padding-top: 20px">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th style="width: 25%">First name</th>
+                    <th style="width: 25%">Last Name</th>
+                    <th style="width: 25%">Course</th>
+                    <th style="width: 25%">Group</th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                @foreach (var course in courses)
+                {
+                    var courseGroups = groups.Where(g => g.CourseId == course.Id);
+
+                    @foreach (var group in courseGroups)
+                    {
+                        var groupStudents = students.Where(s => s.GroupId == group.Id);
+
+                        foreach (var student in groupStudents)
+                        {
+                            <tr>
+                                <td>@student.FirstName</td>
+                                <td>@student.LastName</td>
+                                <td>@course.Name</td>
+                                <td>@group.Name</td>
+                            </tr>
+                        }
+                    }
+                }
+                </tbody>
+            </table>
+
+        </div>
+    }
+    <div class="col text-center">
+        <a asp-controller="Student" asp-action="Create" class="btn btn-info">Add new student</a>
+    </div>
+}
